@@ -12,10 +12,10 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
   const statusValue = status ? parseInt(status, 10) : NaN;
 
   const cardClasses = cn(
-    "rounded-lg transition-all duration-300", // Base styles
+    "rounded-lg transition-all duration-300 p-1.5 sm:p-2 shadow-md", // Base styles for all
     isCurrent
-      ? "p-3 sm:p-4 border-2 shadow-xl" // Current item: Taller, with border and shadow
-      : "p-1.5 sm:p-2 border border-dashed border-primary shadow-md", // Non-current items
+      ? "border-2" // Current item: Thicker border
+      : "border border-dashed border-primary", // Non-current items
     // Conditional background/border color for the current item
     isCurrent && (isNaN(statusValue) || statusValue >= 1) && "border-primary bg-primary/10",
     isCurrent && !isNaN(statusValue) && statusValue <= 0 && "border-green-600 bg-green-500/10"
@@ -45,13 +45,13 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
 
   return (
     <Card className={cardClasses} id={`control-point-card-${point.id}`}>
-      <CardContent className={cn("flex flex-col p-0", isCurrent ? "gap-2 sm:gap-3" : "gap-1")}>
+      <CardContent className="flex flex-col p-0 gap-1">
         <div className="flex justify-between items-center">
-          <span className={cn("text-foreground", isCurrent ? "font-bold text-4xl sm:text-5xl" : "font-semibold text-3xl sm:text-4xl")}>{point.name}</span>
-          <span className={cn("text-foreground font-semibold", isCurrent ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl")}>{displayScheduledTime}</span>
+          <span className="text-foreground font-semibold text-3xl sm:text-4xl">{point.name}</span>
+          <span className="text-foreground font-semibold text-3xl sm:text-4xl">{displayScheduledTime}</span>
         </div>
         {showMetaInfo && (
-          <div className={cn("flex justify-between items-center font-bold", isCurrent ? "text-5xl sm:text-6xl" : "text-4xl sm:text-5xl")}>
+          <div className="flex justify-between items-center font-bold text-4xl sm:text-5xl">
             <div>
               <span>{point.meta}</span>
               {point.metaTime && <span className="ml-2">{displayMetaTime}</span>}
