@@ -48,7 +48,7 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
           <div className="flex items-baseline gap-4" style={{ fontSize: '32px' }}>
             <p className="font-bold text-primary">{routeInfo.unitId}</p>
             {(typeof routeInfo.totalAT === 'number' || typeof routeInfo.totalAD === 'number') && (
-              <p className="text-xl text-foreground">
+              <p className="text-foreground">
                 {typeof routeInfo.totalAT === 'number' && (
                   <>
                     AT: <span className="font-semibold">{routeInfo.totalAT}</span>
