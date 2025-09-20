@@ -46,9 +46,9 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
   return (
     <Card className={cardClasses} id={`control-point-card-${point.id}`}>
       <CardContent className="flex flex-col p-0 gap-1">
-        <div className="flex justify-between items-center">
-          <span className="text-foreground font-semibold text-3xl sm:text-4xl">{point.name}</span>
-          <span className="text-foreground font-semibold text-3xl sm:text-4xl">{displayScheduledTime}</span>
+        <div className="flex justify-between items-center text-3xl sm:text-4xl">
+          <span className="text-foreground font-semibold">{point.name}</span>
+          <span className="text-foreground font-semibold">{displayScheduledTime}</span>
         </div>
         {showMetaInfo && (
           <div className="flex justify-between items-center font-bold text-4xl sm:text-5xl">
