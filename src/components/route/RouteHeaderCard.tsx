@@ -42,8 +42,8 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         />
         <div className="flex-1">
           <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
-          <p className="text-xl font-bold text-muted-foreground">
-            Despacho: <span className="text-foreground">{despachoString}</span>
+          <p className="text-xl">
+            <span className="font-bold">Despacho:</span> <span className="text-foreground">{despachoString}</span>
           </p>
           <div className="flex items-baseline gap-4 text-xl">
             <p className="font-bold text-primary">{routeInfo.unitId}</p>
