@@ -25,7 +25,17 @@ export const useAudio = (url: string): [boolean, () => void] => {
   useEffect(() => {
     if (audio) {
       if (playing) {
-        audio.play().catch(error => console.error("Error al reproducir audio:", error));
+        audio.play().catch(error => {
+          // Captura el error común de auto-play bloqueado para que no rompa la app.
+          // El audio simplemente no sonará hasta la siguiente interacción del usuario.
+          if (error.name === 'NotAllowedError') {
+            console.warn("Reproducción de audio bloqueada por el navegador hasta la interacción del usuario.");
+          } else {
+            console.error("Error al reproducir audio:", error);
+          }
+          // Aún si hay error, reseteamos el estado de 'playing' para el siguiente intento.
+          setPlaying(false);
+        });
       } else {
         audio.pause();
       }
