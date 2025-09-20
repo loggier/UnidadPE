@@ -41,7 +41,7 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
           data-ai-hint="company logo"
         />
         <div className="flex-1">
-          <h1 className="text-4xl font-bold text-foreground tracking-wide leading-tight" style={{ fontSize: '120%' }}>{routeInfo.routeName}</h1>
+          <h1 className="text-4xl font-bold text-foreground tracking-wide leading-tight" style={{ fontSize: '150%' }}>{routeInfo.routeName}</h1>
           <p className="text-3xl leading-tight" style={{ fontSize: '150%' }}>
             <span className="font-bold">Despacho:</span> <span className="font-bold text-foreground">{despachoString}</span>
           </p>
