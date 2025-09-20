@@ -16,16 +16,8 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
     ? routeInfo.currentTime.substring(0, 5)
     : null;
 
-  if (routeInfo.currentDate && /^\d{4}-\d{2}-\d{2}$/.test(routeInfo.currentDate)) {
-    try {
-      const dateObject = parseISO(routeInfo.currentDate);
-      if (isValid(dateObject)) {
-        const formattedDate = format(dateObject, "dd/MM/yyyy");
-        despachoString = `${formattedDate}${timePart ? ` ${timePart}` : ''}`;
-      }
-    } catch (error) {
-      console.warn("RouteHeaderCard: Could not parse or format date:", routeInfo.currentDate, error);
-    }
+  if (timePart) {
+    despachoString = timePart;
   }
 
 
