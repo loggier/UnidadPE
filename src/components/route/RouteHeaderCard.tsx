@@ -10,27 +10,23 @@ interface RouteHeaderCardProps {
 }
 
 export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
-  let displayDate = routeInfo.currentDate;
+  let despachoString = "Despacho: N/A";
+
+  const timePart = routeInfo.currentTime && /^\d{2}:\d{2}:\d{2}$/.test(routeInfo.currentTime)
+    ? routeInfo.currentTime.substring(0, 5)
+    : null;
+
   if (routeInfo.currentDate && /^\d{4}-\d{2}-\d{2}$/.test(routeInfo.currentDate)) {
     try {
       const dateObject = parseISO(routeInfo.currentDate);
       if (isValid(dateObject)) {
-        const dayName = format(dateObject, 'EEEE', { locale: es });
-        const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-        displayDate = `${capitalizedDayName}, ${format(dateObject, "d 'de' MMMM, yyyy", { locale: es })}`;
-      } else {
-        console.warn("RouteHeaderCard: Parsed date is invalid:", routeInfo.currentDate);
+        const formattedDate = format(dateObject, "dd/MM/yyyy");
+        despachoString = `Despacho: ${formattedDate}${timePart ? ` ${timePart}` : ''}`;
       }
     } catch (error) {
-      console.warn("RouteHeaderCard: Could not parse routeInfo.currentDate:", routeInfo.currentDate, error);
+      console.warn("RouteHeaderCard: Could not parse or format date:", routeInfo.currentDate, error);
     }
-  } else if (routeInfo.currentDate) {
-     console.warn("RouteHeaderCard: routeInfo.currentDate is not in YYYY-MM-DD format:", routeInfo.currentDate);
   }
-
-  const displayTime = routeInfo.currentTime && /^\d{2}:\d{2}:\d{2}$/.test(routeInfo.currentTime)
-    ? routeInfo.currentTime.substring(0, 5) 
-    : null;
 
 
   return (
@@ -41,19 +37,14 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
           alt="Logo de la Empresa"
           width={60} 
           height={40} 
-          className="h-8 sm:h-10 w-auto object-contain"
+          className="h-10 w-auto object-contain"
           data-ai-hint="company logo"
         />
         <div className="flex-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
           <p className="text-base text-muted-foreground">
-            {displayDate}
+            {despachoString}
           </p>
-          {displayTime && (
-            <p className="text-base text-muted-foreground">
-              Hora Despacho: <span className="font-semibold">{displayTime}</span>
-            </p>
-          )}
           <div className="flex items-baseline gap-4">
             <p className="text-lg font-medium text-primary">{routeInfo.unitId}</p>
             {(typeof routeInfo.totalAT === 'number' || typeof routeInfo.totalAD === 'number') && (
