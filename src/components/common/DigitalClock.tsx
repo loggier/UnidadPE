@@ -148,7 +148,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
         </Button>
       </div>
       <div className="text-center">
-        <div className="font-mono text-5xl tracking-wider">
+        <div className="font-mono text-5xl tracking-wider" style={{ fontSize: '3.3rem' }}>
           <span>{hours}</span>
           <span className={`transition-opacity duration-150 ease-in-out mx-0.5 sm:mx-1 ${showColon ? 'opacity-100' : 'opacity-25'}`}>:</span>
           <span>{minutes}</span>
@@ -156,7 +156,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
           <span>{seconds}</span>
         </div>
         {dateString && (
-          <div className="text-lg text-gray-300 mt-0.5">{dateString}</div>
+          <div className="text-xl text-gray-300 mt-0.5">{dateString}</div>
         )}
       </div>
     </div>
