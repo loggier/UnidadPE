@@ -39,8 +39,8 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
     }
   }
 
-  // Show meta info only if it's the current point OR if it's a past point (which will have a 'meta' field).
-  const showMetaInfo = isCurrent || !!point.meta;
+  // Show meta info only if it's the current point OR if it's a past point that has a status.
+  const showMetaInfo = isCurrent || (point.meta && point.status);
 
 
   return (
