@@ -1,6 +1,6 @@
 
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
+import { Roboto, Orbitron } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -9,6 +9,13 @@ const roboto = Roboto({
   subsets: ['latin'],
   weight: ['400', '700'],
 });
+
+const orbitron = Orbitron({
+  variable: '--font-orbitron',
+  subsets: ['latin'],
+  weight: ['400', '700', '900'],
+});
+
 
 export const metadata: Metadata = {
   title: 'Unidad PuntoExacto',
@@ -30,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${roboto.variable} antialiased font-sans overflow-hidden`}>
+      <body className={`${roboto.variable} ${orbitron.variable} antialiased font-sans overflow-hidden`}>
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}

@@ -11,6 +11,7 @@ export default {
   	extend: {
   		fontFamily: {
         sans: ["var(--font-roboto)"],
+        orbitron: ["var(--font-orbitron)"],
         mono: ["var(--font-geist-mono)"],
       },
   		colors: {
