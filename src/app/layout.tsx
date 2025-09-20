@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${roboto.variable} antialiased font-sans`}>
+      <body className={`${roboto.variable} antialiased font-sans overflow-hidden`}>
         <div className="flex flex-col min-h-screen">
           <main className="flex-grow">
             {children}
