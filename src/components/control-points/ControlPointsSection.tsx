@@ -21,7 +21,7 @@ export default function ControlPointsSection({ controlPoints }: ControlPointsSec
           if (elementToScrollTo) {
             elementToScrollTo.scrollIntoView({
               behavior: 'smooth',
-              block: 'center',
+              block: 'start',
             });
           }
         }, 100);
@@ -42,9 +42,9 @@ export default function ControlPointsSection({ controlPoints }: ControlPointsSec
           </p>
         </CardContent>
       ) : (
-        <CardContent className="p-6 flex-1 flex flex-col gap-6 overflow-hidden">
+        <CardContent className="p-6 flex-1 flex flex-col gap-2 overflow-hidden">
           <ScrollArea className="flex-1 pr-3">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               {controlPoints.map((point) => (
                 <ControlPointItemCard key={point.id} point={point} />
               ))}
