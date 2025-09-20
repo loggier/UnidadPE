@@ -12,10 +12,10 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
   const statusValue = status ? parseInt(status, 10) : NaN;
 
   const cardClasses = cn(
-    "rounded-lg transition-all duration-300 p-1.5 sm:p-2 shadow-md", // Base styles for all
+    "rounded-lg transition-all duration-300 p-1.5 sm:p-2 shadow-md border", // Base styles for all
     isCurrent
       ? "border-2" // Current item: Thicker border
-      : "border border-dashed border-primary", // Non-current items
+      : "border-dashed border-primary", // Non-current items
     // Conditional background/border color for the current item
     isCurrent && (isNaN(statusValue) || statusValue >= 1) && "border-primary bg-primary/10",
     isCurrent && !isNaN(statusValue) && statusValue <= 0 && "border-green-600 bg-green-500/10"
@@ -51,7 +51,7 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
           <span className="text-foreground font-semibold">{displayScheduledTime}</span>
         </div>
         {showMetaInfo && (
-          <div className="flex justify-between items-center font-bold text-4xl sm:text-5xl">
+          <div className="flex justify-between items-center font-bold text-3xl sm:text-4xl">
             <div>
               <span>{point.meta}</span>
               {point.metaTime && <span className="ml-2">{displayMetaTime}</span>}
