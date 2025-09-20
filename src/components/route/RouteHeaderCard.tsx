@@ -41,14 +41,14 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
           data-ai-hint="company logo"
         />
         <div className="flex-1">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
-          <p className="text-base text-muted-foreground">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
+          <p className="text-lg font-bold text-muted-foreground">
             {despachoString}
           </p>
           <div className="flex items-baseline gap-4">
-            <p className="text-lg font-medium text-primary">{routeInfo.unitId}</p>
+            <p className="text-xl font-bold text-primary">{routeInfo.unitId}</p>
             {(typeof routeInfo.totalAT === 'number' || typeof routeInfo.totalAD === 'number') && (
-              <p className="text-base text-foreground">
+              <p className="text-lg text-foreground">
                 {typeof routeInfo.totalAT === 'number' && (
                   <>
                     AT: <span className="font-semibold">{routeInfo.totalAT}</span>
