@@ -30,7 +30,7 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
           {unitDetails.label}: {unitDetails.unitIdentifier}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 flex flex-col items-center text-center">
+      <CardContent className="p-0 flex flex-col items-center text-center justify-center flex-1">
         <div className="text-xl text-foreground">
           Total AT: <span className="text-primary font-bold">{unitDetails.totalAT}</span> Total AD: <span className="font-bold text-foreground">{unitDetails.totalAD}</span>
         </div>

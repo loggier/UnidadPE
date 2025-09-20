@@ -173,7 +173,7 @@ export default function RouteDashboardClient({
           <ControlPointsSection controlPoints={controlPoints} />
         </div>
 
-        <div className="md:col-span-4 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-y-auto">
+        <div className="md:col-span-4 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
           <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />
           <UnitInfoCard unitDetails={unitBehindDetails} />
