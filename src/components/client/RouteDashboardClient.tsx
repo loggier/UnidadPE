@@ -166,15 +166,28 @@ export default function RouteDashboardClient({
 
 
   return (
-    <div className="h-screen bg-background p-1 sm:p-2 md:p-3 flex flex-col overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 md:gap-4 flex-1 overflow-hidden">
-        <div className="md:col-span-8 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
+    <div className="h-screen bg-background p-1 sm:p-2 md:p-3 flex flex-col overflow-hidden gap-2 sm:gap-3 md:gap-4">
+      
+      {/* Fila Superior: Cabecera y Reloj */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 md:gap-4">
+        <div className="md:col-span-8">
           <RouteHeaderCard routeInfo={routeInfo} />
+        </div>
+        <div className="md:col-span-4">
+          <DigitalClock currentTime={currentTime} />
+        </div>
+      </div>
+      
+      {/* Fila Inferior: Contenido principal */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3 md:gap-4 flex-1 overflow-hidden">
+        
+        {/* Columna Izquierda: Puntos de Control */}
+        <div className="md:col-span-8 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
           <ControlPointsSection controlPoints={controlPoints} />
         </div>
 
+        {/* Columna Derecha: Unidades y Botón */}
         <div className="md:col-span-4 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
-          <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />
           <UnitInfoCard unitDetails={unitBehindDetails} />
            <Button
