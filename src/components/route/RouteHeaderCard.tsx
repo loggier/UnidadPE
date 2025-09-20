@@ -10,7 +10,7 @@ interface RouteHeaderCardProps {
 }
 
 export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
-  let despachoString = "Despacho: N/A";
+  let despachoString = "N/A";
 
   const timePart = routeInfo.currentTime && /^\d{2}:\d{2}:\d{2}$/.test(routeInfo.currentTime)
     ? routeInfo.currentTime.substring(0, 5)
@@ -35,15 +35,15 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         <Image
           src="https://control.puntoexacto.ec/images/logo.png"
           alt="Logo de la Empresa"
-          width={60} 
-          height={40} 
+          width={50}
+          height={40}
           className="h-10 w-auto object-contain"
           data-ai-hint="company logo"
         />
         <div className="flex-1">
-          <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
-          <p className="text-xl">
-            <span className="font-bold">Despacho:</span> <span className="text-foreground">{despachoString}</span>
+          <h1 className="text-5xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
+          <p className="text-2xl">
+            <span className="font-bold">Despacho:</span> <span className="font-bold text-foreground">{despachoString}</span>
           </p>
           <div className="flex items-baseline gap-4 text-xl">
             <p className="font-bold text-primary">{routeInfo.unitId}</p>
