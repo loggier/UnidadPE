@@ -39,37 +39,39 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         <Image
           src="https://control.puntoexacto.ec/images/logo.png"
           alt="Logo de la Empresa"
-          width={100} 
+          width={80} 
           height={60} 
           className="h-8 sm:h-10 md:h-12 w-auto object-contain"
           data-ai-hint="company logo"
         />
         <div className="flex-1">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
-          <p className="text-lg sm:text-lg md:text-xl text-muted-foreground mt-0.5">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground tracking-wide">{routeInfo.routeName}</h1>
+          <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground mt-0.5">
             {displayDate}
           </p>
           {displayTime && (
-            <p className="text-lg sm:text-lg md:text-xl text-muted-foreground">
+            <p className="text-xl sm:text-2xl md:text-3xl text-muted-foreground">
               Hora Despacho: <span className="font-semibold">{displayTime}</span>
             </p>
           )}
-          <p className="text-xl sm:text-2xl md:text-3xl font-medium mt-0.5 text-primary">{routeInfo.unitId}</p>
-          {(typeof routeInfo.totalAT === 'number' || typeof routeInfo.totalAD === 'number') && (
-            <p className="text-lg sm:text-lg md:text-xl text-foreground mt-0.5">
-              {typeof routeInfo.totalAT === 'number' && (
-                <>
-                  Total AT: <span className="font-semibold">{routeInfo.totalAT}</span>
-                </>
-              )}
-              {typeof routeInfo.totalAT === 'number' && typeof routeInfo.totalAD === 'number' && " | "}
-              {typeof routeInfo.totalAD === 'number' && (
-                <>
-                  Total AD: <span className="font-semibold">{routeInfo.totalAD}</span>
-                </>
-              )}
-            </p>
-          )}
+          <div className="flex items-baseline gap-4 mt-0.5">
+            <p className="text-3xl sm:text-4xl md:text-5xl font-medium text-primary">{routeInfo.unitId}</p>
+            {(typeof routeInfo.totalAT === 'number' || typeof routeInfo.totalAD === 'number') && (
+              <p className="text-2xl sm:text-3xl md:text-4xl text-foreground">
+                {typeof routeInfo.totalAT === 'number' && (
+                  <>
+                    AT: <span className="font-semibold">{routeInfo.totalAT}</span>
+                  </>
+                )}
+                {typeof routeInfo.totalAT === 'number' && typeof routeInfo.totalAD === 'number' && " | "}
+                {typeof routeInfo.totalAD === 'number' && (
+                  <>
+                    AD: <span className="font-semibold">{routeInfo.totalAD}</span>
+                  </>
+                )}
+              </p>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
