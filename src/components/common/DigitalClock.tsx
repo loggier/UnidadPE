@@ -84,14 +84,14 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
               <LogOut size={14} />
             </Button>
           </div>
-        <div className="font-mono text-2xl sm:text-3xl md:text-4xl tracking-wider">
+        <div className="font-mono text-4xl sm:text-5xl md:text-6xl tracking-wider">
           <span>--</span>
           <span className="opacity-50 mx-1">:</span>
           <span>--</span>
           <span className="opacity-50 mx-1">:</span>
           <span>--</span>
         </div>
-        <div className="text-base text-gray-400 mt-0.5">Cargando...</div>
+        <div className="text-xl text-gray-400 mt-0.5">Cargando...</div>
       </div>
     );
   }
@@ -148,7 +148,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
         </Button>
       </div>
       <div className="text-center">
-        <div className="font-mono text-2xl sm:text-3xl md:text-4xl tracking-wider">
+        <div className="font-mono text-4xl sm:text-5xl md:text-6xl tracking-wider">
           <span>{hours}</span>
           <span className={`transition-opacity duration-150 ease-in-out mx-0.5 sm:mx-1 ${showColon ? 'opacity-100' : 'opacity-25'}`}>:</span>
           <span>{minutes}</span>
@@ -156,7 +156,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
           <span>{seconds}</span>
         </div>
         {dateString && (
-          <div className="text-base text-gray-300 mt-0.5">{dateString}</div>
+          <div className="text-xl text-gray-300 mt-0.5">{dateString}</div>
         )}
       </div>
     </div>
