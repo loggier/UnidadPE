@@ -40,18 +40,18 @@ export default function ControlPointItemCard({ point }: ControlPointItemCardProp
   }
 
   // Show meta info only if it's the current point OR if it's a past point that has a status.
-  const showMetaInfo = isCurrent || (point.meta && point.status);
+  const showMetaInfo = (isCurrent || point.meta) && point.status;
 
 
   return (
     <Card className={cardClasses} id={`control-point-card-${point.id}`}>
       <CardContent className={cn("flex flex-col p-0", isCurrent ? "gap-2 sm:gap-3" : "gap-1")}>
         <div className="flex justify-between items-center">
-          <span className={cn("text-foreground", isCurrent ? "font-bold text-5xl sm:text-6xl" : "font-semibold text-4xl sm:text-5xl")}>{point.name}</span>
-          <span className={cn("text-foreground font-semibold", isCurrent ? "text-5xl sm:text-6xl" : "text-4xl sm:text-5xl")}>{displayScheduledTime}</span>
+          <span className={cn("text-foreground", isCurrent ? "font-bold text-4xl sm:text-5xl" : "font-semibold text-3xl sm:text-4xl")}>{point.name}</span>
+          <span className={cn("text-foreground font-semibold", isCurrent ? "text-4xl sm:text-5xl" : "text-3xl sm:text-4xl")}>{displayScheduledTime}</span>
         </div>
         {showMetaInfo && (
-          <div className={cn("flex justify-between items-center font-bold", isCurrent ? "text-6xl sm:text-7xl" : "text-5xl sm:text-6xl")}>
+          <div className={cn("flex justify-between items-center font-bold", isCurrent ? "text-5xl sm:text-6xl" : "text-4xl sm:text-5xl")}>
             <div>
               <span>{point.meta}</span>
               {point.metaTime && <span className="ml-2">{displayMetaTime}</span>}
