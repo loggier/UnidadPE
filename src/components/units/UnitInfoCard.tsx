@@ -31,7 +31,7 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 flex flex-col items-center text-center">
-        <div className="text-2xl sm:text-3xl text-foreground">
+        <div className="text-xs text-foreground">
           Total AT: <span className="text-primary font-bold">{unitDetails.totalAT}</span> Total AD: <span className="font-bold text-foreground">{unitDetails.totalAD}</span>
         </div>
         <div className="mt-0.5 sm:mt-1 font-semibold text-3xl sm:text-4xl md:text-4xl text-foreground">
