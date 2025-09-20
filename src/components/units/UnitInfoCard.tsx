@@ -9,9 +9,9 @@ interface UnitInfoCardProps {
 
 export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
   const cardClasses = cn(
-    "rounded-lg shadow-md flex-1 flex flex-col items-center p-1.5 sm:p-2", // Reducido de p-2 sm:p-3
+    "rounded-lg shadow-md flex-1 flex flex-col items-center p-1.5 sm:p-2",
     unitDetails.isPrimary
-      ? "border-primary border-2 sm:border-2" // Ajustado el borde
+      ? "border-primary border-2 sm:border-2"
       : "border border-gray-400"
   );
 
@@ -25,20 +25,20 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
 
   return (
     <Card className={cardClasses}>
-      <CardHeader className="p-0 mb-0.5 sm:mb-1 items-center"> {/* Reducido mb-1 */}
-        <CardTitle className={cn("text-base sm:text-lg font-medium", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
+      <CardHeader className="p-0 mb-0.5 sm:mb-1 items-center">
+        <CardTitle className={cn("text-2xl sm:text-3xl font-medium", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
           {unitDetails.label}: {unitDetails.unitIdentifier}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 flex flex-col items-center text-center">
-        <div className="text-base sm:text-lg text-foreground">
+        <div className="text-2xl sm:text-3xl text-foreground">
           Total AT: <span className="text-primary font-bold">{unitDetails.totalAT}</span> Total AD: <span className="font-bold text-foreground">{unitDetails.totalAD}</span>
         </div>
-        <div className="mt-0.5 sm:mt-1 font-semibold text-lg sm:text-xl md:text-xl text-foreground"> {/* Reducido mt-1 y md:text-lg */}
+        <div className="mt-0.5 sm:mt-1 font-semibold text-3xl sm:text-4xl md:text-4xl text-foreground">
           {unitDetails.lastKnownLocation} - {displayLastKnownTime}
         </div>
         {unitDetails.meta && (
-          <div className="text-base sm:text-lg md:text-lg mt-0.5 sm:mt-1"> {/* Reducido mt-1, md:text-base */}
+          <div className="text-2xl sm:text-3xl md:text-3xl mt-0.5 sm:mt-1">
             {unitDetails.meta} <span className="font-bold text-foreground">{displayMetaTime}</span> {unitDetails.status && <>l: <span className="text-primary font-bold">{unitDetails.status}</span></>}
           </div>
         )}
