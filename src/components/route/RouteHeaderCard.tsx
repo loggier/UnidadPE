@@ -35,9 +35,9 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         <Image
           src="https://control.puntoexacto.ec/images/logo.png"
           alt="Logo de la Empresa"
-          width={40}
-          height={40}
-          className="h-10 w-auto object-contain"
+          width={48}
+          height={48}
+          className="h-12 w-auto object-contain"
           data-ai-hint="company logo"
         />
         <div className="flex-1">
