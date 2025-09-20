@@ -26,7 +26,7 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
   return (
     <Card className={cardClasses}>
       <CardHeader className="p-0 mb-0.5 sm:mb-1 items-center">
-        <CardTitle className={cn("text-2xl sm:text-3xl font-medium", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
+        <CardTitle className={cn("text-lg font-medium", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
           {unitDetails.label}: {unitDetails.unitIdentifier}
         </CardTitle>
       </CardHeader>
@@ -34,11 +34,11 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
         <div className="text-base text-foreground">
           Total AT: <span className="text-primary font-bold">{unitDetails.totalAT}</span> Total AD: <span className="font-bold text-foreground">{unitDetails.totalAD}</span>
         </div>
-        <div className="mt-0.5 sm:mt-1 font-semibold text-3xl sm:text-4xl md:text-4xl text-foreground">
+        <div className="mt-0.5 sm:mt-1 font-semibold text-lg text-foreground">
           {unitDetails.lastKnownLocation} - {displayLastKnownTime}
         </div>
         {unitDetails.meta && (
-          <div className="text-2xl sm:text-3xl md:text-3xl mt-0.5 sm:mt-1">
+          <div className="text-lg mt-0.5 sm:mt-1">
             {unitDetails.meta} <span className="font-bold text-foreground">{displayMetaTime}</span> {unitDetails.status && <>l: <span className="text-primary font-bold">{unitDetails.status}</span></>}
           </div>
         )}
