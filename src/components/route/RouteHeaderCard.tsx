@@ -20,13 +20,13 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
           {typeof routeInfo.speed === 'number' ? (
             <div className="flex flex-col items-center justify-center gap-1 text-foreground">
               <Gauge size={48} className="text-primary"/>
-              <span className="font-bold text-5xl">{routeInfo.speed}</span>
+              <span className="font-orbitron font-bold text-5xl">{routeInfo.speed}</span>
               <span className="font-semibold text-xl -mt-1">km/h</span>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
               <Gauge size={48} />
-              <span className="font-bold text-5xl">--</span>
+              <span className="font-orbitron font-bold text-5xl">--</span>
               <span className="font-semibold text-xl -mt-1">km/h</span>
             </div>
           )}
