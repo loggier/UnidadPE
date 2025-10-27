@@ -176,7 +176,7 @@ export default function RouteDashboardClient({
         </div>
 
         {/* Columna Derecha: Reloj, Unidades y Botón (40%) */}
-        <div className="md:col-span-4 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
+        <div className="md:col-span-4 flex flex-col gap-2 overflow-hidden">
           <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />
           <UnitInfoCard unitDetails={unitBehindDetails} />

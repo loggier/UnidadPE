@@ -63,7 +63,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
 
   if (!timeString) {
     return (
-      <div className="bg-button-custom-dark-gray text-primary-foreground p-1.5 sm:p-2 rounded-lg shadow-md text-center mb-2 sm:mb-3 md:mb-4">
+      <div className="bg-button-custom-dark-gray text-primary-foreground p-1.5 sm:p-2 rounded-lg shadow-md text-center">
         <div className="flex justify-end space-x-1 mb-1">
             <Button
               variant="ghost"
@@ -99,7 +99,7 @@ export default function DigitalClock({ currentTime }: DigitalClockProps) {
   const [hours, minutes, seconds] = timeString.split(':');
 
   return (
-    <div className="bg-button-custom-dark-gray text-primary-foreground p-1.5 sm:p-2 rounded-lg shadow-md mb-2 sm:mb-3 md:mb-4 flex flex-col">
+    <div className="bg-button-custom-dark-gray text-primary-foreground p-1.5 sm:p-2 rounded-lg shadow-md flex flex-col">
       <div className="flex justify-end space-x-1 mb-0.5 sm:mb-1">
         <AlertDialog>
           <AlertDialogTrigger asChild>
