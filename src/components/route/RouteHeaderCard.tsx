@@ -16,13 +16,13 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
     <Card className="shadow-xl">
       <CardContent className="p-2 sm:p-3 flex items-center gap-2 sm:gap-3">
         {/* Contenedor del logo con tamaño relativo para un mejor escalado */}
-        <div className="relative w-20 h-10 sm:w-24 sm:h-12 shrink-0">
+        <div className="relative w-24 h-12 sm:w-28 sm:h-14 shrink-0">
           <Image
             src="https://control.puntoexacto.ec/images/logo.png"
             alt="Logo de la Empresa"
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 5rem, 6rem" // Proporciona pistas al navegador para la optimización
+            sizes="(max-width: 640px) 6rem, 7rem" // Proporciona pistas al navegador para la optimización
             data-ai-hint="company logo"
             priority // Carga la imagen con prioridad ya que es LCP
           />
