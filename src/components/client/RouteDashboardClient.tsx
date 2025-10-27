@@ -168,14 +168,9 @@ export default function RouteDashboardClient({
   return (
     <div className="h-screen bg-background p-1 sm:p-2 md:p-3 flex flex-col overflow-hidden gap-2 sm:gap-3 md:gap-4">
       
-      {/* Fila Superior: Cabecera y Reloj */}
-      <div className="grid grid-cols-1 md:grid-cols-10 gap-2 sm:gap-3 md:gap-4">
-        <div className="md:col-span-6">
-          <RouteHeaderCard routeInfo={routeInfo} />
-        </div>
-        <div className="md:col-span-4">
-          <DigitalClock currentTime={currentTime} />
-        </div>
+      {/* Fila Superior: Cabecera */}
+      <div className="w-full">
+        <RouteHeaderCard routeInfo={routeInfo} />
       </div>
       
       {/* Fila Inferior: Contenido principal */}
@@ -186,8 +181,9 @@ export default function RouteDashboardClient({
           <ControlPointsSection controlPoints={controlPoints} />
         </div>
 
-        {/* Columna Derecha: Unidades y Botón (40%) */}
+        {/* Columna Derecha: Reloj, Unidades y Botón (40%) */}
         <div className="md:col-span-4 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
+          <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />
           <UnitInfoCard unitDetails={unitBehindDetails} />
            <Button
