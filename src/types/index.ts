@@ -30,4 +30,5 @@ export interface RouteInfo {
   unitId: string;
   totalAT?: number; // Nuevo campo
   totalAD?: number; // Nuevo campo
+  speed?: number; // Nuevo campo para la velocidad
 }

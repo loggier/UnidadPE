@@ -8,6 +8,7 @@ export const MOCK_ROUTE_INFO: RouteInfo = {
   unitId: 'Unidad: 39 (1875)',
   totalAT: 0,
   totalAD: 0,
+  speed: 45,
 };
 
 export const MOCK_CONTROL_POINTS: ControlPoint[] = [
