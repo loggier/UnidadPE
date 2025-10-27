@@ -124,11 +124,18 @@ export default function RouteSchedulePage() {
   if (isLoading || !currentUnitId || !pageData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
-        <div className="space-y-4 w-full max-w-4xl">
-          <Skeleton className="h-32 w-full" />
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div className="md:col-span-8 space-y-4">
-              <Skeleton className="h-64 w-full" />
+        <div className="space-y-4 w-full max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
+             <div className="md:col-span-6">
+                <Skeleton className="h-32 w-full" />
+             </div>
+             <div className="md:col-span-4">
+                <Skeleton className="h-32 w-full" />
+             </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
+            <div className="md:col-span-6 space-y-4">
+              <Skeleton className="h-[60vh] w-full" />
             </div>
             <div className="md:col-span-4 space-y-4">
               <Skeleton className="h-24 w-full" />
