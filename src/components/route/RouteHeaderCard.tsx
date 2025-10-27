@@ -2,8 +2,6 @@
 import type { RouteInfo } from '@/types';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
-import { format, parseISO, isValid } from 'date-fns';
-import { es } from 'date-fns/locale';
 
 interface RouteHeaderCardProps {
   routeInfo: RouteInfo;
@@ -27,9 +25,9 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         <Image
           src="https://control.puntoexacto.ec/images/logo.png"
           alt="Logo de la Empresa"
-          width={48}
-          height={48}
-          className="h-12 w-auto object-contain"
+          width={32}
+          height={32}
+          className="h-8 w-auto object-contain"
           data-ai-hint="company logo"
         />
         <div className="flex-1">
