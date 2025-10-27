@@ -1,7 +1,6 @@
 
 import type { RouteInfo } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Gauge } from 'lucide-react';
 
 interface RouteHeaderCardProps {
   routeInfo: RouteInfo;
@@ -18,16 +17,14 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
         {/* Columna Izquierda: Velocidad */}
         <div className="flex flex-col items-center justify-center shrink-0 w-32 sm:w-40 bg-muted rounded-md p-2">
           {typeof routeInfo.speed === 'number' ? (
-            <div className="flex flex-col items-center justify-center gap-1 text-foreground">
-              <Gauge size={48} className="text-primary"/>
-              <span className="font-orbitron font-bold text-5xl">{routeInfo.speed}</span>
-              <span className="font-semibold text-xl -mt-1">km/h</span>
+            <div className="flex flex-col items-center justify-center text-foreground">
+              <span className="font-orbitron font-bold text-6xl">{routeInfo.speed}</span>
+              <span className="font-semibold text-lg -mt-1">km/h</span>
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
-              <Gauge size={48} />
-              <span className="font-orbitron font-bold text-5xl">--</span>
-              <span className="font-semibold text-xl -mt-1">km/h</span>
+            <div className="flex flex-col items-center justify-center text-muted-foreground">
+              <span className="font-orbitron font-bold text-6xl">--</span>
+              <span className="font-semibold text-lg -mt-1">km/h</span>
             </div>
           )}
         </div>
