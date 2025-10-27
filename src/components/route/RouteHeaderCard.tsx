@@ -1,6 +1,5 @@
 
 import type { RouteInfo } from '@/types';
-import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Gauge } from 'lucide-react';
 
@@ -16,23 +15,19 @@ export default function RouteHeaderCard({ routeInfo }: RouteHeaderCardProps) {
   return (
     <Card className="shadow-xl">
       <CardContent className="p-2 sm:p-3 flex items-center gap-2 sm:gap-3">
-        {/* Columna Izquierda: Logo y Velocidad */}
-        <div className="flex flex-col items-center justify-center shrink-0 w-32 sm:w-40">
-          <div className="relative w-full h-16 sm:h-20">
-            <Image
-              src="https://control.puntoexacto.ec/images/logo.png"
-              alt="Logo de la Empresa"
-              fill
-              className="object-contain"
-              sizes="(max-width: 640px) 8rem, 10rem"
-              data-ai-hint="company logo"
-              priority
-            />
-          </div>
-          {typeof routeInfo.speed === 'number' && (
-            <div className="flex items-center gap-1.5 text-foreground mt-1">
-              <Gauge size={24} className="text-primary"/>
-              <span className="font-bold text-2xl">{routeInfo.speed} km/h</span>
+        {/* Columna Izquierda: Velocidad */}
+        <div className="flex flex-col items-center justify-center shrink-0 w-32 sm:w-40 bg-muted rounded-md p-2">
+          {typeof routeInfo.speed === 'number' ? (
+            <div className="flex flex-col items-center justify-center gap-1 text-foreground">
+              <Gauge size={48} className="text-primary"/>
+              <span className="font-bold text-5xl">{routeInfo.speed}</span>
+              <span className="font-semibold text-xl -mt-1">km/h</span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
+              <Gauge size={48} />
+              <span className="font-bold text-5xl">--</span>
+              <span className="font-semibold text-xl -mt-1">km/h</span>
             </div>
           )}
         </div>
