@@ -26,7 +26,7 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
   return (
     <Card className={cardClasses}>
       <CardHeader className="p-0 mb-0.5 sm:mb-1 items-center">
-        <CardTitle className={cn("text-3xl font-medium", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
+        <CardTitle className={cn("text-4xl font-bold", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
           {unitDetails.label}: {unitDetails.unitIdentifier}
         </CardTitle>
       </CardHeader>
