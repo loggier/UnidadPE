@@ -25,20 +25,20 @@ export default function UnitInfoCard({ unitDetails }: UnitInfoCardProps) {
 
   return (
     <Card className={cardClasses}>
-      <CardHeader className="p-0 mb-0.5 sm:mb-1 items-center">
+      <CardHeader className="p-0 mb-0 sm:mb-0.5 items-center">
         <CardTitle className={cn("text-4xl font-bold", unitDetails.isPrimary ? "text-primary" : "text-muted-foreground")}>
           {unitDetails.label}: {unitDetails.unitIdentifier}
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 flex flex-col items-center text-center justify-center flex-1">
-        <div className="text-xl text-foreground">
+      <CardContent className="p-0 flex flex-col items-center text-center justify-center flex-1 gap-0">
+        <div className="text-2xl text-foreground">
           Total AT: <span className="text-primary font-bold">{unitDetails.totalAT}</span> Total AD: <span className="font-bold text-foreground">{unitDetails.totalAD}</span>
         </div>
-        <div className="mt-0.5 sm:mt-1 font-semibold text-2xl text-foreground">
+        <div className="font-semibold text-3xl text-foreground">
           {unitDetails.lastKnownLocation} - {displayLastKnownTime}
         </div>
         {unitDetails.meta && (
-          <div className="text-2xl mt-0.5 sm:mt-1">
+          <div className="text-3xl">
             {unitDetails.meta} <span className="font-bold text-foreground">{displayMetaTime}</span> {unitDetails.status && <>l: <span className="text-primary font-bold">{unitDetails.status}</span></>}
           </div>
         )}
