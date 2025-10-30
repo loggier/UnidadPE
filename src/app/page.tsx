@@ -173,7 +173,7 @@ export default function RouteSchedulePage() {
       initialRouteInfo={pageData.routeInfo}
       initialControlPoints={pageData.controlPoints}
       initialUnitAhead={pageData.unitAhead}
-      initialUnitBehind={page.unitBehind}
+      initialUnitBehind={pageData.unitBehind}
       currentUnitId={currentUnitId}
     />
   );
