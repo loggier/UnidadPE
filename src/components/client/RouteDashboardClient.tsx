@@ -11,7 +11,7 @@ import ControlPointsSection from '@/components/control-points/ControlPointsSecti
 import UnitInfoCard from '@/components/units/UnitInfoCard';
 import DigitalClock from '@/components/common/DigitalClock';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, WifiOff } from 'lucide-react';
 import { EMPTY_UNIT_DETAILS } from '@/lib/constants';
 
 interface RawApiDataForClient {
@@ -50,6 +50,7 @@ export default function RouteDashboardClient({
   const [unitAheadDetails, setUnitAheadDetails] = useState<UnitDetails>(initialUnitAhead);
   const [unitBehindDetails, setUnitBehindDetails] = useState<UnitDetails>(initialUnitBehind);
   const [isLoading, setIsLoading] = useState(false);
+  const [isApiError, setIsApiError] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -110,7 +111,6 @@ export default function RouteDashboardClient({
   };
 
   const fetchData = useCallback(async (unitIdToFetch: string, isManualRefresh: boolean = false) => {
-    // Solo mostrar el spinner de carga para el refresh manual
     if (isManualRefresh) {
       setIsLoading(true);
     }
@@ -132,6 +132,7 @@ export default function RouteDashboardClient({
 
       if(processedData) {
         updateClientData(processedData);
+        setIsApiError(false); // Success, clear any previous error
         if (isManualRefresh) { 
           toast({
             description: 'Datos actualizados.',
@@ -143,17 +144,14 @@ export default function RouteDashboardClient({
       }
     } catch (error) {
       console.error(`Error en fetchData (${isManualRefresh ? 'manual' : 'background'}):`, error);
-      
-      // Mostrar toast solo si es un refresh manual.
+      setIsApiError(true); // An error occurred, set the error state
       if (isManualRefresh) {
         toast({
             title: 'Error de Actualización',
-            description: "No se pudo refrescar la información. Intente nuevamente.",
+            description: "No se pudo refrescar la información. Compruebe la conexión.",
             variant: 'destructive',
         });
       }
-      // No cerramos sesión por errores de red o servidor. El usuario puede seguir viendo datos antiguos.
-      
     } finally {
       if (isManualRefresh) {
         setIsLoading(false);
@@ -166,16 +164,14 @@ export default function RouteDashboardClient({
     fetchData(currentUnitId, true);
   }, [currentUnitId, fetchData]);
 
-  // Efecto para el auto-refresh en segundo plano
   useEffect(() => {
     if (!currentUnitId) return;
     const intervalId = setInterval(() => {
-      fetchData(currentUnitId, false); // false indica que es un refresh automático/background
+      fetchData(currentUnitId, false);
     }, AUTO_REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
   }, [currentUnitId, fetchData]);
 
-  // Sincroniza el estado si las props iniciales cambian
   useEffect(() => {
     setRouteInfo(initialRouteInfo);
     setControlPoints(initialControlPoints);
@@ -199,13 +195,23 @@ export default function RouteDashboardClient({
           <UnitInfoCard unitDetails={unitBehindDetails} />
            <Button
              onClick={handleManualRefresh}
-             className="w-full bg-button-custom-dark-gray hover:bg-button-custom-dark-gray/90 text-primary-foreground mt-auto py-3 sm:py-4 text-2xl"
+             className={cn(
+               "w-full text-primary-foreground mt-auto py-3 sm:py-4 text-2xl",
+               isApiError 
+                 ? "bg-destructive hover:bg-destructive/90" 
+                 : "bg-button-custom-dark-gray hover:bg-button-custom-dark-gray/90"
+             )}
              disabled={isLoading}
            >
              {isLoading ? (
                <>
                  <RefreshCw size={24} className="mr-2 animate-spin" />
                  Refrescando...
+               </>
+             ) : isApiError ? (
+               <>
+                 <WifiOff size={24} className="mr-2" />
+                 Sin Conexión
                </>
              ) : (
                <>

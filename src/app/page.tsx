@@ -29,6 +29,7 @@ export default function RouteSchedulePage() {
   const [currentUnitId, setCurrentUnitId] = useState<string | null>(null);
   const [pageData, setPageData] = useState<ProcessedClientData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [initialLoadError, setInitialLoadError] = useState(false);
 
   const handleLogoutAndRedirect = useCallback((message: string) => {
     localStorage.removeItem('currentUnitId');
@@ -84,6 +85,7 @@ export default function RouteSchedulePage() {
 
   const fetchPageData = useCallback(async (unitIdToFetch: string) => {
     setIsLoading(true);
+    setInitialLoadError(false);
     try {
       const response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
       
@@ -107,19 +109,12 @@ export default function RouteSchedulePage() {
 
     } catch (err) {
       console.error(`Error crítico al obtener datos para la unidad ${unitIdToFetch}:`, err);
-      // No redirigimos al login aquí para evitar bucles.
-      // Si la carga inicial falla, el usuario verá el esqueleto de carga y puede reintentar con el refresh del RouteDashboardClient
-      // o la página permanecerá en estado de carga.
-      // El RouteDashboardClient se encargará de mostrar un estado de error si es necesario.
-      toast({
-        title: "Error al Cargar Datos",
-        description: "No se pudo obtener la información inicial. Compruebe la conexión y vuelva a intentarlo.",
-        variant: "destructive"
-      });
+      setInitialLoadError(true);
+      // No redirigimos. El estado de error se pasará a RouteDashboardClient
     } finally {
       setIsLoading(false);
     }
-  }, [processRawDataForPage, handleLogoutAndRedirect, toast]);
+  }, [processRawDataForPage, handleLogoutAndRedirect]);
 
   useEffect(() => {
     const unitIdFromStorage = localStorage.getItem('currentUnitId');
@@ -159,14 +154,12 @@ export default function RouteSchedulePage() {
     );
   }
 
-  // Si no hay datos y no está cargando, es que hubo un error.
-  // El RouteDashboardClient mostrará un estado vacío/error.
-  if (!pageData || !currentUnitId) {
-    // Si pageData es null y no estamos cargando, significa que el fetch inicial falló.
-    // Pasamos props vacías/iniciales al cliente para que muestre el estado de error/vacío.
+  // Si hubo un error en la carga inicial (y no estamos cargando), mostramos el dashboard en estado de error
+  // o si no hay datos por alguna razón.
+  if (initialLoadError || !pageData || !currentUnitId) {
     return (
         <RouteDashboardClient
-            initialRouteInfo={{ routeName: 'Error', currentDate: '', unitId: 'N/A' }}
+            initialRouteInfo={{ routeName: 'Error de Carga', currentDate: '', unitId: 'N/A' }}
             initialControlPoints={[]}
             initialUnitAhead={{ ...EMPTY_UNIT_DETAILS, id: 'error-ahead', label: 'Adelante' }}
             initialUnitBehind={{ ...EMPTY_UNIT_DETAILS, id: 'error-behind', label: 'Atrás' }}
@@ -180,7 +173,7 @@ export default function RouteSchedulePage() {
       initialRouteInfo={pageData.routeInfo}
       initialControlPoints={pageData.controlPoints}
       initialUnitAhead={pageData.unitAhead}
-      initialUnitBehind={pageData.unitBehind}
+      initialUnitBehind={page.unitBehind}
       currentUnitId={currentUnitId}
     />
   );
