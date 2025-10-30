@@ -13,6 +13,7 @@ import DigitalClock from '@/components/common/DigitalClock';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, WifiOff } from 'lucide-react';
 import { EMPTY_UNIT_DETAILS } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface RawApiDataForClient {
   routeInfo: RouteInfo;
