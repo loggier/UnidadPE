@@ -109,8 +109,9 @@ export default function RouteDashboardClient({
     setUnitBehindDetails(data.unitBehind);
   };
 
-  const fetchData = useCallback(async (unitIdToFetch: string, isBackgroundRefresh: boolean = false) => {
-    if (!isBackgroundRefresh) {
+  const fetchData = useCallback(async (unitIdToFetch: string, isManualRefresh: boolean = false) => {
+    // Solo mostrar el spinner de carga para el refresh manual
+    if (isManualRefresh) {
       setIsLoading(true);
     }
     
@@ -119,11 +120,10 @@ export default function RouteDashboardClient({
       
       if (response.status === 401) {
         handleLogoutAndRedirect("Su sesión ha expirado o no está autorizado.");
-        return; // Detiene la ejecución
+        return;
       }
       
       if (!response.ok) {
-        // Cualquier otro error HTTP (500, 404, etc.)
         throw new Error(`Error de servidor: ${response.status}`);
       }
       
@@ -132,8 +132,7 @@ export default function RouteDashboardClient({
 
       if(processedData) {
         updateClientData(processedData);
-        if (!isBackgroundRefresh) { 
-          // Opcional: Notificación sutil de éxito solo en refresh manual
+        if (isManualRefresh) { 
           toast({
             description: 'Datos actualizados.',
             variant: 'default',
@@ -143,37 +142,40 @@ export default function RouteDashboardClient({
         throw new Error("Los datos recibidos no son válidos.");
       }
     } catch (error) {
-      // Captura errores de red (fetch falla) y errores lanzados arriba
-      console.error(`Error en fetchData (${isBackgroundRefresh ? 'background' : 'manual'}):`, error);
+      console.error(`Error en fetchData (${isManualRefresh ? 'manual' : 'background'}):`, error);
       
-      // Solo mostramos toast si es un refresh manual. Para background, es silencioso.
-      if (!isBackgroundRefresh) {
+      // Mostrar toast solo si es un refresh manual.
+      if (isManualRefresh) {
         toast({
-            title: 'Error de Conexión',
+            title: 'Error de Actualización',
             description: "No se pudo refrescar la información. Intente nuevamente.",
             variant: 'destructive',
         });
       }
-      // No se cierra la sesión por estos errores. El usuario puede seguir viendo los datos viejos.
+      // No cerramos sesión por errores de red o servidor. El usuario puede seguir viendo datos antiguos.
       
     } finally {
-      if (!isBackgroundRefresh) {
+      if (isManualRefresh) {
         setIsLoading(false);
       }
     }
   }, [toast, processRawDataForClient, handleLogoutAndRedirect]); 
 
   const handleManualRefresh = useCallback(() => {
-    fetchData(currentUnitId, false);
+    if (!currentUnitId) return;
+    fetchData(currentUnitId, true);
   }, [currentUnitId, fetchData]);
 
+  // Efecto para el auto-refresh en segundo plano
   useEffect(() => {
+    if (!currentUnitId) return;
     const intervalId = setInterval(() => {
-      fetchData(currentUnitId, true); 
+      fetchData(currentUnitId, false); // false indica que es un refresh automático/background
     }, AUTO_REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
   }, [currentUnitId, fetchData]);
 
+  // Sincroniza el estado si las props iniciales cambian
   useEffect(() => {
     setRouteInfo(initialRouteInfo);
     setControlPoints(initialControlPoints);
@@ -186,13 +188,11 @@ export default function RouteDashboardClient({
     <div className="h-screen bg-background p-1 sm:p-2 md:p-3 flex flex-col overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-10 gap-2 sm:gap-3 md:gap-4 flex-1 overflow-hidden">
         
-        {/* Columna Izquierda: Cabecera y Puntos de Control (60%) */}
         <div className="md:col-span-6 flex flex-col gap-2 sm:gap-3 md:gap-4 overflow-hidden">
           <RouteHeaderCard routeInfo={routeInfo} />
           <ControlPointsSection controlPoints={controlPoints} />
         </div>
 
-        {/* Columna Derecha: Reloj, Unidades y Botón (40%) */}
         <div className="md:col-span-4 flex flex-col gap-1 overflow-hidden">
           <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />

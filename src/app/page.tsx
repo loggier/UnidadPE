@@ -41,7 +41,6 @@ export default function RouteSchedulePage() {
   }, [router, toast]);
   
   const processRawDataForPage = useCallback((rawData: RawApiData, unitId: string): ProcessedClientData | null => {
-    // Si routeInfo no existe, es un indicador de que no hay datos válidos.
     if (!rawData.routeInfo || !rawData.routeInfo.unitId) {
         console.warn(`No se encontraron datos de ruta para la unidad ${unitId}.`);
         return null;
@@ -94,7 +93,6 @@ export default function RouteSchedulePage() {
       }
       
       if (!response.ok) {
-        // Para otros errores HTTP, simplemente lanzamos un error para ser capturado por el bloque catch.
         throw new Error(`Error de servidor: ${response.status}`);
       }
 
@@ -104,29 +102,24 @@ export default function RouteSchedulePage() {
       if (processedData) {
         setPageData(processedData);
       } else {
-        // La respuesta fue OK (200) pero los datos no son válidos/están vacíos.
         throw new Error("No se encontraron datos de despacho para la unidad.");
       }
 
     } catch (err) {
       console.error(`Error crítico al obtener datos para la unidad ${unitIdToFetch}:`, err);
-      
-      if (!pageData) {
-        // Si es la carga inicial y falla (sea cual sea el error), no hay nada que mostrar. 
-        // Es mejor redirigir al login en este caso crítico.
-        handleLogoutAndRedirect("No se pudo cargar la información inicial. Verifique su conexión e intente de nuevo.");
-      } else {
-        // Si ya hay datos en pantalla (es un refresh), mostramos un toast genérico y no cerramos sesión.
-        toast({
-          title: "Error de Actualización",
-          description: "No se pudo refrescar la información.",
-          variant: "destructive"
-        });
-      }
+      // No redirigimos al login aquí para evitar bucles.
+      // Si la carga inicial falla, el usuario verá el esqueleto de carga y puede reintentar con el refresh del RouteDashboardClient
+      // o la página permanecerá en estado de carga.
+      // El RouteDashboardClient se encargará de mostrar un estado de error si es necesario.
+      toast({
+        title: "Error al Cargar Datos",
+        description: "No se pudo obtener la información inicial. Compruebe la conexión y vuelva a intentarlo.",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
-  }, [processRawDataForPage, handleLogoutAndRedirect, pageData, toast]);
+  }, [processRawDataForPage, handleLogoutAndRedirect, toast]);
 
   useEffect(() => {
     const unitIdFromStorage = localStorage.getItem('currentUnitId');
@@ -138,7 +131,7 @@ export default function RouteSchedulePage() {
     }
   }, [router, fetchPageData]);
 
-  if (isLoading || !currentUnitId || !pageData) {
+  if (isLoading && !pageData) { // Solo muestra el esqueleto en la carga inicial
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
         <div className="space-y-4 w-full max-w-7xl">
@@ -163,6 +156,22 @@ export default function RouteSchedulePage() {
           </div>
         </div>
       </div>
+    );
+  }
+
+  // Si no hay datos y no está cargando, es que hubo un error.
+  // El RouteDashboardClient mostrará un estado vacío/error.
+  if (!pageData || !currentUnitId) {
+    // Si pageData es null y no estamos cargando, significa que el fetch inicial falló.
+    // Pasamos props vacías/iniciales al cliente para que muestre el estado de error/vacío.
+    return (
+        <RouteDashboardClient
+            initialRouteInfo={{ routeName: 'Error', currentDate: '', unitId: 'N/A' }}
+            initialControlPoints={[]}
+            initialUnitAhead={{ ...EMPTY_UNIT_DETAILS, id: 'error-ahead', label: 'Adelante' }}
+            initialUnitBehind={{ ...EMPTY_UNIT_DETAILS, id: 'error-behind', label: 'Atrás' }}
+            currentUnitId={currentUnitId || ''}
+        />
     );
   }
 
