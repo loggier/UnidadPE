@@ -85,11 +85,18 @@ export default function RouteSchedulePage() {
 
   const fetchPageData = useCallback(async (unitIdToFetch: string) => {
     setIsLoading(true);
+    let response: Response;
     try {
-      const response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
+      response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
+      
+      if (response.status === 401) {
+        handleLogoutAndRedirect("La sesión ha expirado. Por favor, inicie sesión de nuevo.");
+        return;
+      }
       
       if (!response.ok) {
-        throw new Error(`Error de API: ${response.status} ${response.statusText}. La unidad podría no ser válida.`);
+        const errorText = await response.text().catch(() => `Error de API: ${response.status}`);
+        throw new Error(`Error de API (${response.status}): ${errorText}`);
       }
 
       const rawData: RawApiData = await response.json();
@@ -98,18 +105,28 @@ export default function RouteSchedulePage() {
       if (processedData) {
         setPageData(processedData);
       } else {
-        // Si no hay datos de ruta, se considera un error y se redirige
-        throw new Error("No se encontraron datos de despacho para la unidad.");
+        throw new Error("No se encontraron datos de despacho para la unidad. La respuesta puede no ser válida.");
       }
 
     } catch (err) {
       console.error(`Error crítico al obtener datos para la unidad ${unitIdToFetch}:`, err);
-      const errorMessage = err instanceof Error ? err.message : 'Error desconocido.';
-      handleLogoutAndRedirect(`No se pudo cargar la información. ${errorMessage} Por favor, inicie sesión de nuevo.`);
+      // No cerramos sesión por errores de red o 500, etc.
+      // Si pageData existe, el usuario puede seguir viendo la última info válida.
+      if (!pageData) {
+        // Si es la carga inicial y falla, no hay nada que mostrar. Lo mejor es redirigir.
+        handleLogoutAndRedirect("No se pudo cargar la información inicial. Por favor, inicie sesión de nuevo.");
+      } else {
+        // Si es un refresh, mostramos toast pero no redirigimos.
+        toast({
+          title: "Error de Actualización",
+          description: err instanceof Error ? err.message : "No se pudo refrescar la información.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [processRawDataForPage, handleLogoutAndRedirect]);
+  }, [processRawDataForPage, handleLogoutAndRedirect, pageData, toast]);
 
   useEffect(() => {
     const unitIdFromStorage = localStorage.getItem('currentUnitId');

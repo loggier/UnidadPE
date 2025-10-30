@@ -113,11 +113,20 @@ export default function RouteDashboardClient({
     if (!isBackgroundRefresh) {
       setIsLoading(true);
     }
+    let response: Response;
     try {
-      const response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
-      if (!response.ok) {
-        throw new Error(`Error de API (${response.status})`);
+      response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
+      
+      if (response.status === 401) {
+        handleLogoutAndRedirect("Su sesión ha expirado o no está autorizado.");
+        return;
       }
+      
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => `Error de API: ${response.status}`);
+        throw new Error(`Error de API (${response.status}): ${errorText}`);
+      }
+      
       const rawData: RawApiDataForClient = await response.json();
       const processedData = processRawDataForClient(rawData, unitIdToFetch);
 
@@ -131,14 +140,20 @@ export default function RouteDashboardClient({
           });
         }
       } else {
-        // Si no hay datos válidos, incluso en una actualización en segundo plano, es un problema.
-        throw new Error("Los datos recibidos no son válidos.");
+        throw new Error("Los datos recibidos no son válidos o están incompletos.");
       }
     } catch (error) {
       console.error(`Error en fetchData (${isBackgroundRefresh ? 'background' : 'manual'}):`, error);
-      const errorMessage = error instanceof Error ? error.message : `Error desconocido.`;
-      // Si la actualización falla (manual o en segundo plano), cerramos sesión.
-      handleLogoutAndRedirect(`La sesión ha expirado o los datos son inválidos. ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : "Error desconocido.";
+      
+      // Para cualquier error (de red, 500, etc.), NO cerramos sesión.
+      // Solo mostramos una notificación.
+      toast({
+          title: isBackgroundRefresh ? 'Error de Actualización en Segundo Plano' : 'Error al Refrescar',
+          description: `No se pudieron obtener los datos. ${errorMessage}`,
+          variant: 'destructive',
+      });
+      
     } finally {
       if (!isBackgroundRefresh) {
         setIsLoading(false);
@@ -176,7 +191,7 @@ export default function RouteDashboardClient({
         </div>
 
         {/* Columna Derecha: Reloj, Unidades y Botón (40%) */}
-        <div className="md:col-span-4 flex flex-col gap-2 overflow-hidden">
+        <div className="md:col-span-4 flex flex-col gap-1 overflow-hidden">
           <DigitalClock currentTime={currentTime} />
           <UnitInfoCard unitDetails={unitAheadDetails} />
           <UnitInfoCard unitDetails={unitBehindDetails} />
