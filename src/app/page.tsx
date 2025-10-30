@@ -85,9 +85,8 @@ export default function RouteSchedulePage() {
 
   const fetchPageData = useCallback(async (unitIdToFetch: string) => {
     setIsLoading(true);
-    let response: Response;
     try {
-      response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
+      const response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
       
       if (response.status === 401) {
         handleLogoutAndRedirect("La sesión ha expirado. Por favor, inicie sesión de nuevo.");
@@ -95,8 +94,8 @@ export default function RouteSchedulePage() {
       }
       
       if (!response.ok) {
-        const errorText = await response.text().catch(() => `Error de API: ${response.status}`);
-        throw new Error(`Error de API (${response.status}): ${errorText}`);
+        // Para otros errores HTTP, simplemente lanzamos un error para ser capturado por el bloque catch.
+        throw new Error(`Error de servidor: ${response.status}`);
       }
 
       const rawData: RawApiData = await response.json();
@@ -105,21 +104,22 @@ export default function RouteSchedulePage() {
       if (processedData) {
         setPageData(processedData);
       } else {
-        throw new Error("No se encontraron datos de despacho para la unidad. La respuesta puede no ser válida.");
+        // La respuesta fue OK (200) pero los datos no son válidos/están vacíos.
+        throw new Error("No se encontraron datos de despacho para la unidad.");
       }
 
     } catch (err) {
       console.error(`Error crítico al obtener datos para la unidad ${unitIdToFetch}:`, err);
-      // No cerramos sesión por errores de red o 500, etc.
-      // Si pageData existe, el usuario puede seguir viendo la última info válida.
+      
       if (!pageData) {
-        // Si es la carga inicial y falla, no hay nada que mostrar. Lo mejor es redirigir.
-        handleLogoutAndRedirect("No se pudo cargar la información inicial. Por favor, inicie sesión de nuevo.");
+        // Si es la carga inicial y falla (sea cual sea el error), no hay nada que mostrar. 
+        // Es mejor redirigir al login en este caso crítico.
+        handleLogoutAndRedirect("No se pudo cargar la información inicial. Verifique su conexión e intente de nuevo.");
       } else {
-        // Si es un refresh, mostramos toast pero no redirigimos.
+        // Si ya hay datos en pantalla (es un refresh), mostramos un toast genérico y no cerramos sesión.
         toast({
           title: "Error de Actualización",
-          description: err instanceof Error ? err.message : "No se pudo refrescar la información.",
+          description: "No se pudo refrescar la información.",
           variant: "destructive"
         });
       }

@@ -113,18 +113,18 @@ export default function RouteDashboardClient({
     if (!isBackgroundRefresh) {
       setIsLoading(true);
     }
-    let response: Response;
+    
     try {
-      response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
+      const response = await fetch(`https://control.puntoexacto.ec/api/get_despacho/${unitIdToFetch}`);
       
       if (response.status === 401) {
         handleLogoutAndRedirect("Su sesión ha expirado o no está autorizado.");
-        return;
+        return; // Detiene la ejecución
       }
       
       if (!response.ok) {
-        const errorText = await response.text().catch(() => `Error de API: ${response.status}`);
-        throw new Error(`Error de API (${response.status}): ${errorText}`);
+        // Cualquier otro error HTTP (500, 404, etc.)
+        throw new Error(`Error de servidor: ${response.status}`);
       }
       
       const rawData: RawApiDataForClient = await response.json();
@@ -133,26 +133,28 @@ export default function RouteDashboardClient({
       if(processedData) {
         updateClientData(processedData);
         if (!isBackgroundRefresh) { 
+          // Opcional: Notificación sutil de éxito solo en refresh manual
           toast({
-            title: 'Datos Actualizados',
-            description: 'La información del despacho ha sido refrescada.',
+            description: 'Datos actualizados.',
             variant: 'default',
           });
         }
       } else {
-        throw new Error("Los datos recibidos no son válidos o están incompletos.");
+        throw new Error("Los datos recibidos no son válidos.");
       }
     } catch (error) {
+      // Captura errores de red (fetch falla) y errores lanzados arriba
       console.error(`Error en fetchData (${isBackgroundRefresh ? 'background' : 'manual'}):`, error);
-      const errorMessage = error instanceof Error ? error.message : "Error desconocido.";
       
-      // Para cualquier error (de red, 500, etc.), NO cerramos sesión.
-      // Solo mostramos una notificación.
-      toast({
-          title: isBackgroundRefresh ? 'Error de Actualización en Segundo Plano' : 'Error al Refrescar',
-          description: `No se pudieron obtener los datos. ${errorMessage}`,
-          variant: 'destructive',
-      });
+      // Solo mostramos toast si es un refresh manual. Para background, es silencioso.
+      if (!isBackgroundRefresh) {
+        toast({
+            title: 'Error de Conexión',
+            description: "No se pudo refrescar la información. Intente nuevamente.",
+            variant: 'destructive',
+        });
+      }
+      // No se cierra la sesión por estos errores. El usuario puede seguir viendo los datos viejos.
       
     } finally {
       if (!isBackgroundRefresh) {
