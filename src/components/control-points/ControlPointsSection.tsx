@@ -5,21 +5,19 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useEffect, useRef } from 'react';
 import { Info } from 'lucide-react';
-import { useAudio } from '@/hooks/use-audio';
 
 interface ControlPointsSectionProps {
   controlPoints: ControlPoint[];
 }
 
 export default function ControlPointsSection({ controlPoints }: ControlPointsSectionProps) {
-  const [playing, toggle] = useAudio('/audio/station.mp3');
   const prevCurrentPointId = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (controlPoints.length > 0) {
       const currentPoint = controlPoints.find(p => p.isCurrent);
       if (currentPoint) {
-        // Scroll
+        // Scroll to the current point
         const targetId = `control-point-card-${currentPoint.id}`;
         setTimeout(() => {
           const elementToScrollTo = document.getElementById(targetId);
@@ -31,18 +29,12 @@ export default function ControlPointsSection({ controlPoints }: ControlPointsSec
           }
         }, 100);
 
-        // Audio notification
-        if (prevCurrentPointId.current !== currentPoint.id) {
-          if (typeof toggle === 'function') {
-            toggle();
-          }
-          prevCurrentPointId.current = currentPoint.id;
-        }
+        prevCurrentPointId.current = currentPoint.id;
       } else {
         prevCurrentPointId.current = undefined;
       }
     }
-  }, [controlPoints, toggle]);
+  }, [controlPoints]);
 
   return (
     <Card className="shadow-xl flex-1 flex flex-col overflow-hidden">
