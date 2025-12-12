@@ -1,4 +1,4 @@
 import { config } from 'dotenv';
 config();
 
-import '@/ai/flows/predict-eta.ts';
+// El flujo predict-eta.ts se ha eliminado para permitir la exportación estática.
